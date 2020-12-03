@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>美迪康-项目详情</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<!--   <meta content="" name="keywords">
+  <meta content="" name="description"> -->
+
+  {% load staticfiles %}
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
+
+  <!-- Bootstrap CSS File -->
+  <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Libraries CSS Files -->
+  <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+
+  <!-- Main Stylesheet File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <!-- 134 templates -->
+  <!-- <link href="{% static '134/css/root.css' %}" rel="stylesheet"> -->
+
+  <!-- echarts 具体内网上线时需要离线下载该js库到static文件夹 -->
+
+  <!-- <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script> -->
+  <!-- <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script> -->
+
+
+  <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+
+
+  
+</head>
+
+<body>
+
+  <!--==========================
+    Header
+  ============================-->
+  <header id="header">
+    <div class="container-fluid">
+
+      <div id="logo" class="pull-left">
+        <h1><a href="#intro" class="scrollto"><font color="#00FFFF">{{ project }}</font></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="#intro"><img src="img/logo.png" alt="" title="" /></a>-->
+      </div>
+
+      <nav id="nav-menu-container">
+        <ul class="nav-menu">
+          <li ><a href="{% url 'index' %}"><font color="#00FFFF">主页</font></a></li>
+          <li class="menu-active"><a href="#about"><font color="#00FFFF">项目介绍</font></a></li>
+          <li><a href="#metric"><font color="#00FFFF">评价指标介绍</font></a></li>
+          <li><a href="#sort"><font color="#00FFFF">排行榜</font></a></li>
+          <li><a href="#demo"><font color="#00FFFF">效果展示</font></a></li>
+
+
+
+        </ul>
+      </nav><!-- #nav-menu-container -->
+    </div>
+  </header><!-- #header -->
+
+ <!-- ------------------------------------------------------------ -->
+
+  <main id="main">
+
+<!-- ==========================
+      About Us Section
+    ============================ -->
+    <section id="about">
+      <div class="container">
+
+        <header class="section-header">
+          <h3>项目介绍</h3>
+          <!-- <p>展示目前美迪康AI项目列表</p> -->
+        </header>
+
+
+       <!-- --------------项目介绍-------- -->
+
+        {% if title_detial is not None %}
+   
+            <br/>
+
+            <p>{{ detial_detail | safe }}</p>
+
+            <br/>
+    
+        {% else %}
+            <h4 style="text-align:center">---- 当前没有项目介绍 ----</h4>
+        {% endif %}
+
+
+        <!--------------- 结束项目介绍------------------ -->
+
+      </div>
+    </section><!-- #about -->
+
+
+    <!-- ==========================
+      评价指标 Section
+    ============================ -->
+    <section id="metric">
+      <div class="container">
+
+        <header class="section-header">
+          <h3>数据和评价指标介绍</h3>
+          <!-- <p>展示目前美迪康AI项目列表</p> -->
+        </header>
+
+
+       <!-- --------------评价指标-------- -->
+
+        {% if title_data is not None %}
+   
+            <br/>
+            {% autoescape off %}
+            <p>{{ data_text | safe }}</p>
+            {% endautoescape %}
+            <br/>
+    
+        {% else %}
+            <h4 style="text-align:center">---- 当前没有数据和评价指标的介绍 ----</h4>
+        {% endif %}
+
+
+        <!--------------- 评价指标------------------ -->
+
+      </div>
+    </section> <!-- 评价指标 -->
+
+    <!-- ==========================
+      排名 Section
+    ============================ -->
+    <section id="sort">
+      <div class="container">
+
+        <header class="section-header">
+          <h3>评价指标及指标可视化</h3>
+          <!-- <p>展示目前美迪康AI项目列表</p> -->
+        </header>
+
+        
+
+        {% if testList is None %}
+           <h4 style="text-align:center">---- 当前没有排行榜的信息 ----</h4>
+        {% else %}
+            <!-- 排行榜和pyecharts绘图 -->
+            <h6>一、排行榜</h6>
+
+            {% for test_A in testList %}
+                <!-- data_sort = sortdata.test_A -->
+
+                <div class="panel-body table-responsive">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <td>{{ test_A }}榜排名</td>
+                        <td>得分</td>
+                        <td>使用模型</td>
+                        <td>提交时间</td>
+                        <td>备注</td>
+
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {% for sort_row in sortdata|get_item:test_A %}
+                        <tr>
+                          <td> {{ sort_row.sort}} </td>
+                          <td> {{ sort_row.score }}  </td>
+                          <td> {{ sort_row.model }}</td>
+                          <td> {{ sort_row.time }}</td>
+
+                          {% if sort_row.sort <= 3 %}
+                            <td> <i class="ion-ios-heart-outline"></i> </td>
+                          {% else %}
+                            <td> </td>
+                          {% endif %}
+
+
+                        </tr>
+
+
+                      {% endfor %}
+
+                    </tbody>
+                  </table>
+
+                </div>
+              </hr>
+              </hr>
+
+              {% endfor %}
+
+
+        {% endif %}
+
+
+        {% if not testList is None %}
+          <h6>二、得分走势</h6>
+          <div style='text-align:center;'>
+
+            
+            {{ line_plot|safe }}
+
+          </div>
+
+
+
+        {% endif %}
+
+        
+                          
+
+
+
+
+
+
+
+       
+
+
+
+      </div>
+    </section> <!-- sort -->
+
+
+
+
+
+
+    <!-- ==========================
+      demo Section
+    ============================ -->
+    <section id="demo">
+      <div class="container">
+
+        <header class="section-header">
+          <h3>效果展示</h3>
+          <!-- <p>展示目前美迪康AI项目列表</p> -->
+        </header>
+
+
+       <!-- --------------demo-------- -->
+
+        {% if title_demo is not None %}
+   
+            <br/>
+            <p>{{ detial_demo | safe }}</p>
+            <br/>
+    
+        {% else %}
+            <h4 style="text-align:center">---- 当前没有项目识别效果的展示 ----</h4>
+        {% endif %}
+
+
+        <!--------------- demo------------------ -->
+
+      </div>
+    </section> <!-- demo -->
+    
+  </main>
+
+  <!--==========================
+    Footer
+  ============================-->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6 footer-info">
+            <h5>青岛美迪康数字工程</h5>
+            <p>青岛美迪康数字工程有限公司成立于2003年，是一家专业集医疗影像信息系统的研发，行业解决方案和服务
+            为一体的高科技公司。是国内领先的数字化医学影像全面解决方案提供商，尤其在内镜影像信息领域，
+          始终走在国内技术发展的前沿。</p>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="ion-ios-arrow-right"></i> <a href="#">主页</a></li>   
+              <li><i class="ion-ios-arrow-right"></i> <a href="#">项目</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-contact">
+            <h4>Contact Us</h4>
+            <p>
+              山东省青岛市市南区太平路51号山东国际贸易大厦15层  <br>
+              <strong>Phone:</strong> xxxxxxxx<br>
+              <strong>Email:</strong> xxxxxxxx <br>
+            </p>
+
+<!--             <div class="social-links">
+              <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+              <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+              <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+              <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
+              <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+            </div> -->
+
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-newsletter">
+            <h4>AI Lab</h4>
+            <p>基于海量大数据，使用机器学习，深度学习为医疗领域的企业单位和个体提供计算机视觉，自然语言处理，大数据分析等专业化服务</p>
+<!--             <form action="" method="post">
+              <input type="email" name="email"><input type="submit"  value="Subscribe">
+            </form> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong>青岛美迪康</strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!--
+          All the links in the footer should remain intact.
+          You can delete the links only if you purchased the pro version.
+          Licensing information: https://bootstrapmade.com/license/
+          Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=BizPage
+        -->
+        Best <a href="{% url 'index' %}">AI Lab</a> by 青岛美迪康
+      </div>
+    </div>
+  </footer><!-- #footer -->
+
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+  <!-- JavaScript Libraries -->
+  <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'lib/jquery/jquery-migrate.min.js' %}"></script>
+  <script src="{% static 'lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+  <script src="{% static 'lib/superfish/hoverIntent.js' %}"></script>
+  <script src="{% static 'lib/superfish/superfish.min.js' %}"></script>
+  <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+  <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+  <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+  <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'lib/isotope/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'lib/lightbox/js/lightbox.min.js' %}"></script>
+  <script src="{% static 'lib/touchSwipe/jquery.touchSwipe.min.js' %}"></script>
+  <!-- Contact Form JavaScript File -->
+  <script src="{% static 'contactform/contactform.js' %}"></script>
+
+  <!-- Template Main Javascript File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>
